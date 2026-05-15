@@ -8,6 +8,10 @@ def classify_intent(features: dict) -> str:
     # Rule 1
     if pitch == "high" and duration == "short" and tone == "flat" and intensity == "medium" and count == 1:
         return "greeting"
+    # Rule 7 checked before Rule 2: confusion is a specific subset of question
+    # (same features but intensity=soft); if Rule 2 ran first it would always shadow Rule 7.
+    if pitch == "high" and duration == "short" and tone == "rising" and intensity == "soft" and count == 1:
+        return "confusion"
     # Rule 2
     if pitch == "high" and duration == "short" and tone == "rising" and count == 1:
         return "question"
@@ -23,9 +27,6 @@ def classify_intent(features: dict) -> str:
     # Rule 6
     if pitch == "mid" and duration == "medium" and tone == "flat" and intensity == "soft" and count >= 3:
         return "affection"
-    # Rule 7
-    if pitch == "high" and duration == "short" and tone == "rising" and intensity == "soft" and count == 1:
-        return "confusion"
     # Rule 8
     if pitch == "high" and duration == "short" and tone == "flat" and intensity == "loud" and count >= 2:
         return "excitement"
