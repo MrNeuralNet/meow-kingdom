@@ -2,75 +2,317 @@
   min-height: 100vh;
   background: linear-gradient(160deg, #0d0720 0%, #1a0a2e 50%, #0a1a2e 100%);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 24px 20px 140px; /* bottom padding reserves space for subtitle bar */
+  position: relative;
+  overflow: hidden;
 }
 
-.ceremony__content {
+/* Ambient background shimmer */
+.ceremony::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 40%, rgba(120, 60, 200, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ── Progress dots ──────────────────────────────── */
+.ceremony__progress {
+  position: absolute;
+  top: 28px;
+  display: flex;
+  gap: 14px;
+}
+
+.ceremony__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 215, 0, 0.15);
+  border: 1px solid rgba(255, 215, 0, 0.35);
+  transition: all 0.4s ease;
+}
+
+.ceremony__dot--active {
+  background: rgba(255, 215, 0, 0.55);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  transform: scale(1.2);
+}
+
+.ceremony__dot--done {
+  background: rgba(255, 215, 0, 0.85);
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+}
+
+/* ── Main stage ──────────────────────────────────── */
+.ceremony__stage {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 28px;
   max-width: 480px;
   width: 100%;
+  z-index: 1;
+}
+
+/* ── King emoji ──────────────────────────────────── */
+.ceremony__emoji {
+  font-size: 7rem;
+  transition: all 0.4s ease;
+  filter: drop-shadow(0 8px 32px rgba(0, 0, 0, 0.6));
+  animation: emojiAppear 0.5s ease;
+}
+
+.ceremony__emoji--speaking {
+  animation: emojiAppear 0.5s ease, kingtalk 1.4s ease-in-out infinite alternate;
+}
+
+@keyframes emojiAppear {
+  from { opacity: 0; transform: scale(0.7); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes kingtalk {
+  from { transform: translateY(0)   scale(1);    filter: drop-shadow(0 8px 24px rgba(0,0,0,0.5)); }
+  to   { transform: translateY(-10px) scale(1.06); filter: drop-shadow(0 16px 36px rgba(255,215,0,0.35)); }
+}
+
+/* ── King speech bubble ──────────────────────────── */
+.ceremony__speech {
+  background: linear-gradient(135deg, #1e1208, #2a1a0a);
+  border: 1.5px solid rgba(255, 215, 0, 0.55);
+  border-radius: 18px;
+  padding: 18px 28px;
+  max-width: 380px;
   text-align: center;
+  position: relative;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,215,0,0.1);
+  animation: speechAppear 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.ceremony__crown {
-  font-size: 5rem;
-  animation: float 3s ease-in-out infinite;
+/* Speech bubble tail pointing up toward the emoji */
+.ceremony__speech::before {
+  content: '';
+  position: absolute;
+  top: -11px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-bottom-color: rgba(255, 215, 0, 0.55);
 }
 
-.ceremony__title {
+.ceremony__speech::after {
+  content: '';
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-bottom-color: #1e1208;
+}
+
+@keyframes speechAppear {
+  from { opacity: 0; transform: scale(0.85) translateY(10px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0); }
+}
+
+.ceremony__meow-text {
   font-family: 'Cinzel', serif;
-  font-size: 2.8rem;
-  font-weight: 700;
+  font-size: 1.5rem;
   color: #ffd700;
-  text-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 24px rgba(255, 215, 0, 0.45);
 }
 
-.ceremony__subtitle {
-  font-family: 'Lato', sans-serif;
-  font-size: 1.1rem;
-  color: #c8b4e0;
-  font-style: italic;
+/* ── Name input ──────────────────────────────────── */
+.ceremony__name-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  max-width: 360px;
+  animation: fadeInUp 0.4s ease;
 }
 
 .ceremony__input {
-  width: 100%;
   padding: 14px 20px;
-  background: rgba(255,255,255,0.07);
+  background: rgba(255, 255, 255, 0.07);
   border: 1px solid rgba(255, 215, 0, 0.4);
   border-radius: 12px;
   color: #f5e6c8;
   font-family: 'Lato', sans-serif;
   font-size: 1rem;
   outline: none;
-  transition: border-color 0.3s ease;
+  text-align: center;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .ceremony__input::placeholder { color: #7a6a8a; }
 
 .ceremony__input:focus {
   border-color: rgba(255, 215, 0, 0.8);
-  box-shadow: 0 0 12px rgba(255, 215, 0, 0.15);
+  box-shadow: 0 0 14px rgba(255, 215, 0, 0.18);
 }
 
-.ceremony__instruction {
+.ceremony__submit-btn {
+  padding: 13px 28px;
+  background: linear-gradient(135deg, #b8860b, #7a5a08);
+  border: none;
+  border-radius: 10px;
+  color: #fff8e7;
+  font-family: 'Cinzel', serif;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 0.04em;
+}
+
+.ceremony__submit-btn:hover:not(:disabled) {
+  transform: scale(1.04);
+  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.35);
+}
+
+.ceremony__submit-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* ── User pledge step ────────────────────────────── */
+.ceremony__pledge-user {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  animation: fadeInUp 0.4s ease;
+}
+
+/* Shows the king's line again for the player to repeat */
+.ceremony__pledge-echo {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  border-radius: 14px;
+  padding: 16px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 380px;
+}
+
+.ceremony__pledge-king-meow {
+  font-family: 'Cinzel', serif;
+  font-size: 1.3rem;
+  color: #ffd700;
+  letter-spacing: 0.06em;
+}
+
+.ceremony__pledge-translation {
   font-family: 'Lato', sans-serif;
-  font-size: 0.95rem;
-  color: #a090c0;
+  font-size: 0.88rem;
+  color: #c8b4e0;
   font-style: italic;
 }
 
-.ceremony__error {
-  color: #ff6b6b;
-  font-size: 0.9rem;
+.ceremony__retry-msg {
+  color: #ffaa66;
+  font-size: 0.88rem;
+  font-family: 'Lato', sans-serif;
+  text-align: center;
+  max-width: 340px;
+  animation: fadeInUp 0.3s ease;
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(-12px); }
+.ceremony__attempts {
+  font-size: 0.75rem;
+  color: #665575;
+  font-family: 'Lato', sans-serif;
+}
+
+/* ── Result display ──────────────────────────────── */
+.ceremony__result {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 28px;
+  border-radius: 14px;
+  max-width: 380px;
+  animation: resultAppear 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.ceremony__result--pass {
+  background: rgba(46, 204, 113, 0.12);
+  border: 1px solid rgba(46, 204, 113, 0.45);
+}
+
+.ceremony__result--fail {
+  background: rgba(231, 76, 60, 0.1);
+  border: 1px solid rgba(231, 76, 60, 0.35);
+}
+
+@keyframes resultAppear {
+  from { opacity: 0; transform: scale(0.8); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.ceremony__result-icon {
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.ceremony__result--pass .ceremony__result-icon { color: #2ecc71; }
+.ceremony__result--fail .ceremony__result-icon { color: #e74c3c; }
+
+.ceremony__result-text {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.ceremony__result--pass .ceremony__result-text { color: #a8f0c0; }
+.ceremony__result--fail .ceremony__result-text { color: #ffaaaa; }
+
+/* ── Subtitle bar — film-caption style ──────────── */
+.ceremony__subtitle-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px 32px 32px;
+  background: linear-gradient(0deg,
+    rgba(0, 0, 0, 0.90) 0%,
+    rgba(0, 0, 0, 0.65) 60%,
+    transparent 100%
+  );
+  text-align: center;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.ceremony__subtitle-text {
+  font-family: 'Lato', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 400;
+  font-style: italic;
+  color: #f0e0c0;
+  text-shadow:
+    0 1px 4px rgba(0, 0, 0, 1),
+    0 0 40px rgba(0, 0, 0, 0.9);
+  max-width: 640px;
+  margin: 0 auto;
+  line-height: 1.6;
+  animation: subtitleFade 0.6s ease;
+}
+
+/* ── Shared animations ───────────────────────────── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes subtitleFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }

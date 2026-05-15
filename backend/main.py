@@ -60,6 +60,51 @@ async def pledge(body: dict):
     return {"success": True, "message": f"The Meow King acknowledges you, {player_name}."}
 
 
+@app.post("/check-pledge/{line_index}")
+async def check_pledge_line(line_index: int, body: dict):
+    audio_bytes = base64.b64decode(body["audio_base64"])
+    features = extract_features(audio_bytes)
+    print(f"[/check-pledge/{line_index}] features={features}")
+    passed, feedback = _evaluate_pledge_line(line_index, features)
+    return {"passed": passed, "feedback": feedback, "features": features}
+
+
+def _evaluate_pledge_line(line_index: int, features: dict):
+    duration  = features["duration"]
+    intensity = features["intensity"]
+    count     = features["meow_count"]
+
+    if line_index == 0:
+        # "I pledge my meow to the kingdom eternal." — deep and sustained
+        passed = duration in ["medium", "long"]
+        feedback = (
+            "Hold your meow longer — let it ring through the halls of the kingdom."
+            if not passed else
+            "The kingdom feels the weight of your dedication."
+        )
+    elif line_index == 1:
+        # "To serve with loyalty and thunderous purring." — energetic, loud
+        passed = intensity in ["medium", "loud"] or count >= 2
+        feedback = (
+            "Put more heart into it! Louder! The walls must shake!"
+            if not passed else
+            "The halls echo with the sound of your loyalty."
+        )
+    elif line_index == 2:
+        # "And to meow truly, from this day forth, forevermore." — three distinct meows
+        passed = count >= 2
+        feedback = (
+            "Three meows! Mew, mew, mew — let each one be distinct!"
+            if not passed else
+            "Three true meows. The ancient words have been spoken."
+        )
+    else:
+        passed = True
+        feedback = "The kingdom accepts your pledge."
+
+    return passed, feedback
+
+
 @app.get("/health")
 async def health():
     return {"status": "meowing"}

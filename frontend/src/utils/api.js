@@ -28,3 +28,9 @@ export async function pledgeFealty(player_name) {
   const response = await axios.post(`${BASE_URL}/pledge`, { player_name });
   return response.data;
 }
+
+export async function checkPledgeLine(audioBlob, lineIndex) {
+  const audio_base64 = await blobToBase64(audioBlob);
+  const response = await axios.post(`${BASE_URL}/check-pledge/${lineIndex}`, { audio_base64 });
+  return response.data;
+}
