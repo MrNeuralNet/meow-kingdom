@@ -1,0 +1,49 @@
+.stat-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stat-bar__label {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.8rem;
+  color: #f5e6c8;
+  white-space: nowrap;
+}
+
+.stat-bar__track {
+  position: relative;
+  flex: 1;
+  height: 10px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 10px;
+  overflow: visible;
+}
+
+.stat-bar__fill {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.5s ease;
+}
+
+.stat-bar__fill--green  { background: linear-gradient(90deg, #2ecc71, #27ae60); }
+.stat-bar__fill--gold   { background: linear-gradient(90deg, #f1c40f, #e67e22); }
+.stat-bar__fill--purple { background: linear-gradient(90deg, #9b59b6, #6c3483); }
+
+.stat-bar__marker {
+  position: absolute;
+  top: -3px;
+  width: 3px;
+  height: 16px;
+  background: rgba(255, 215, 0, 0.7);
+  border-radius: 2px;
+  transform: translateX(-50%);
+}
+
+.stat-bar__value {
+  font-family: 'Cinzel', serif;
+  font-size: 0.8rem;
+  color: #ffd700;
+  min-width: 32px;
+  text-align: right;
+}

@@ -1,0 +1,166 @@
+.gameworld {
+  min-height: 100vh;
+  background: linear-gradient(160deg, #0d0720 0%, #1a0a2e 60%, #0a1520 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+  gap: 16px;
+}
+
+.gameworld__topbar {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: rgba(0,0,0,0.35);
+  border-radius: 12px;
+}
+
+.gameworld__back {
+  background: none;
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  color: #ffd700;
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+}
+
+.gameworld__back:hover {
+  background: rgba(255, 215, 0, 0.1);
+}
+
+.gameworld__npc-name {
+  font-family: 'Cinzel', serif;
+  font-size: 1.1rem;
+  color: #ffd700;
+}
+
+.gameworld__rel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.gameworld__rel-label {
+  font-size: 0.65rem;
+  color: #a090c0;
+  font-family: 'Lato', sans-serif;
+}
+
+.gameworld__rel-value {
+  font-family: 'Cinzel', serif;
+  font-size: 0.95rem;
+}
+
+.gameworld__npc-display {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gameworld__emoji {
+  font-size: 7rem;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.5));
+}
+
+.gameworld__delta {
+  position: absolute;
+  top: -10px;
+  right: -30px;
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  animation: floatUp 2.5s ease forwards;
+}
+
+.gameworld__delta--pos { color: #2ecc71; }
+.gameworld__delta--neg { color: #e74c3c; }
+
+@keyframes floatUp {
+  0%   { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-40px); }
+}
+
+.gameworld__bubble {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 215, 0, 0.25);
+  border-radius: 16px;
+  padding: 16px 20px;
+  max-width: 560px;
+  width: 100%;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.gameworld__npc-text {
+  font-family: 'Lato', sans-serif;
+  font-size: 1.05rem;
+  color: #f5e6c8;
+  line-height: 1.6;
+}
+
+.gameworld__intent-label {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.8rem;
+  color: #8a7aaa;
+  font-style: italic;
+  margin-top: 8px;
+}
+
+.gameworld__error {
+  color: #ff6b6b;
+  font-size: 0.9rem;
+  font-family: 'Lato', sans-serif;
+}
+
+.gameworld__history {
+  width: 100%;
+  max-width: 560px;
+  max-height: 160px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 4px;
+}
+
+.gameworld__history-entry {
+  display: flex;
+  gap: 10px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 8px;
+  padding: 6px 10px;
+  animation: fadeInUp 0.3s ease;
+}
+
+.gameworld__history-intent {
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  color: #b8860b;
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.gameworld__history-text {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.8rem;
+  color: #c0b0d0;
+}
+
+.gameworld__meow-wrap {
+  margin-top: auto;
+  padding-bottom: 24px;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
